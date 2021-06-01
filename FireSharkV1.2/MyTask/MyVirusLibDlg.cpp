@@ -83,7 +83,7 @@ void MyVirusLibDlg::PrintVirusList()
 	DWORD nCount = nLoadVirusLib.LoadVirusLibData();
 	PVIRUSINFO m_VirusInfo = new VIRUSINFO[nCount];
 	nLoadVirusLib.GetVirusLib(m_VirusInfo);
-	nLoadVirusLib.ClearVirusLibData();
+	nLoadVirusLib.clear_virus_lib_data();
 
 	for (DWORD i = 0; i < nCount; i++)
 	{

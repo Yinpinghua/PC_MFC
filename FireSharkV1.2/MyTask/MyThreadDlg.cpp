@@ -7,7 +7,7 @@
 #include "afxdialogex.h"
 #include "MyHead.h"
 
-extern DWORD g_Pid;
+extern DWORD g_pid;
 
 // CMyThreadDlg 对话框
 
@@ -28,7 +28,6 @@ void MyThreadDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_THREAD, m_List_Thread);
 }
-
 
 BEGIN_MESSAGE_MAP(MyThreadDlg, CDialogEx)
 	ON_COMMAND(ID_SUSPENDTHREAD, &MyThreadDlg::OnSuspendthread)
@@ -74,7 +73,7 @@ BOOL MyThreadDlg::OnInitDialog()
 	RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
 
 	THREADLIST nThreadList = {};
-	DWORD nNum = EnumThreadList(nThreadList, g_Pid);//枚举进程列表
+	DWORD nNum = EnumThreadList(nThreadList, g_pid);//枚举进程列表
 	PrintThreadList(m_List_Thread, nThreadList, nNum);//打印进程到列表
 	ClearThreadList(nThreadList);
 

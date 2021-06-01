@@ -22,7 +22,7 @@ typedef struct _MODULELIST
 {
 	CString *szModule;
 	CString *szExePath;
-	DWORD *modBaseAddr;
+	DWORD *mod_base_addr;
 	DWORD *dwSize;
 }MODULELIST, *PMOUDLELIST;
 

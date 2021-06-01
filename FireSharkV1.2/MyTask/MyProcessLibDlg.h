@@ -33,6 +33,6 @@ public:
 	void PrintProcessList();
 	afx_msg void OnDblclkListLib(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButton1();
-	afx_msg void OnBnClickedButton7();
+	afx_msg void OnBnClickedBtn7();
 	CButton btn_add_all_;
 };

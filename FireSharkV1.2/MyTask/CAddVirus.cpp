@@ -29,15 +29,11 @@ void CAddVirus::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
-
 BEGIN_MESSAGE_MAP(CAddVirus, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CAddVirus::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-
 // CAddVirus 消息处理程序
-
-
 void CAddVirus::OnBnClickedOk()
 {
 	CString nFileName;

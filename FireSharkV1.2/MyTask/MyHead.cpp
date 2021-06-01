@@ -129,7 +129,7 @@ DWORD EnumModuleList(MODULELIST &nModuleList, DWORD nPid)
 
 	nModuleList.szModule = new CString[nIndex];
 	nModuleList.szExePath = new CString[nIndex];
-	nModuleList.modBaseAddr = new DWORD[nIndex];
+	nModuleList.mod_base_addr = new DWORD[nIndex];
 	nModuleList.dwSize = new DWORD[nIndex];
 
 	nIndex = 0;
@@ -138,7 +138,7 @@ DWORD EnumModuleList(MODULELIST &nModuleList, DWORD nPid)
 	{
 		nModuleList.szModule[nIndex] = nModule.szModule;
 		nModuleList.szExePath[nIndex] = nModule.szExePath;
-		nModuleList.modBaseAddr[nIndex] = (DWORD)nModule.modBaseAddr;
+		nModuleList.mod_base_addr[nIndex] = (DWORD)nModule.modBaseAddr;
 		nModuleList.dwSize[nIndex] = nModule.dwSize;
 
 		nRet = Module32Next(nSnapShot, &nModule);
@@ -316,8 +316,8 @@ void ClearModuleList(MODULELIST &nModuleList)
 	delete[]nModuleList.szExePath;
 	nModuleList.szExePath = nullptr;
 
-	delete[]nModuleList.modBaseAddr;
-	nModuleList.modBaseAddr = nullptr;
+	delete[]nModuleList.mod_base_addr;
+	nModuleList.mod_base_addr = nullptr;
 
 	delete[]nModuleList.dwSize;
 	nModuleList.dwSize = nullptr;

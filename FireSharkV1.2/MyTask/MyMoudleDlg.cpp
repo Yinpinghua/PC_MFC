@@ -7,7 +7,7 @@
 #include "afxdialogex.h"
 #include "MyHead.h"
 
-extern DWORD g_Pid;
+extern DWORD g_pid;
 
 // MyMoudleDlg 对话框
 
@@ -29,28 +29,23 @@ void MyMoudleDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_MODULE, m_List_Module);
 }
 
-
 BEGIN_MESSAGE_MAP(MyMoudleDlg, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_MODULE, &MyMoudleDlg::OnDblclkListModule)
 END_MESSAGE_MAP()
-
-
 // MyMoudleDlg 消息处理程序
-void PrintModuleList(ClistCtrlEx &m_List_Module, MODULELIST &nModuleList, DWORD nTaskNum)
+void PrintModuleList(ClistCtrlEx &m_List_Module, MODULELIST &nModuleList, const DWORD nTaskNum)
 {
-
 	for (DWORD i = 0; i < nTaskNum; i++)
 	{
 		DWORD nIndex = m_List_Module.GetItemCount();
 		m_List_Module.InsertItem(nIndex, nModuleList.szModule[nIndex]);
 		m_List_Module.SetItemText(nIndex, 1, nModuleList.szExePath[nIndex]);
 		CString str;
-		str.Format(L"%p", nModuleList.modBaseAddr[nIndex]);
+		str.Format(L"%p", nModuleList.mod_base_addr[nIndex]);
 		m_List_Module.SetItemText(nIndex, 2, str);
 		m_List_Module.SetItemText(nIndex, 3, nModuleList.dwSize[nIndex]);
 	}
 }
-
 
 //显示dll模块信息
 BOOL MyMoudleDlg::OnInitDialog()
@@ -65,13 +60,12 @@ BOOL MyMoudleDlg::OnInitDialog()
 	RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
 
 	MODULELIST nModuleList = {};
-	DWORD nNum = EnumModuleList(nModuleList,g_Pid);//枚举进程列表
+	DWORD nNum = EnumModuleList(nModuleList,g_pid);//枚举进程列表
 	PrintModuleList(m_List_Module, nModuleList, nNum);//打印进程到列表
 	ClearModuleList(nModuleList);
 
-	return TRUE; 
+	return true; 
 }
-
 
 void MyMoudleDlg::OnDblclkListModule(NMHDR *pNMHDR, LRESULT *pResult)
 {

@@ -359,9 +359,12 @@ VOID MyClearUpDlg::CleanSystemTemp()
 //清理回收站
 VOID MyClearUpDlg::CleanRubbishStation()
 {
-	if (IsScanFile)
+	if (IsScanFile) {
 		return;
-	SHEmptyRecycleBin(NULL, NULL,SHERB_NOCONFIRMATION | SHERB_NOPROGRESSUI | SHERB_NOSOUND);
+	}
+
+	SHEmptyRecycleBin(NULL, NULL,SHERB_NOCONFIRMATION | 
+		SHERB_NOPROGRESSUI | SHERB_NOSOUND);
 }
 
 //创建一个线程进行扫描
@@ -369,12 +372,21 @@ DWORD WINAPI ScanClearUpThread(LPVOID lpThreadParameter)
 {
 	MyClearUpDlg *nDlg = (MyClearUpDlg*)lpThreadParameter;
 
-	if (nDlg->m_Check_SystemTemp.GetCheck())nDlg->CleanSystemTemp();//清理系统缓存
-	if (nDlg->m_Check_Rubbish.GetCheck())nDlg->CleanRubbishStation();//清理回收站
+	if (nDlg->m_Check_SystemTemp.GetCheck()) {
+		nDlg->CleanSystemTemp();//清理系统缓存
+	}
 
+	if (nDlg->m_Check_Rubbish.GetCheck()) {
+		nDlg->CleanRubbishStation();//清理回收站
+	}
 
-	if (nDlg->m_Check_InterCookies.GetCheck())nDlg->CleanInternetCookieTemp();//清理浏览器缓存cookies
-	if (nDlg->m_Check_BrowseHistroy.GetCheck())nDlg->CleanBrowseAddrHistory();//清理浏览记录
+	if (nDlg->m_Check_InterCookies.GetCheck()) {
+		nDlg->CleanInternetCookieTemp();//清理浏览器缓存cookies
+	}
+
+	if (nDlg->m_Check_BrowseHistroy.GetCheck()) {
+		nDlg->CleanBrowseAddrHistory();//清理浏览记录
+	}
 	if (nDlg->m_Check_PassHistory.GetCheck())nDlg->CleanPasswordHistory();//清理密码记录
 
 	nDlg->m_Button_Scan.EnableWindow(TRUE);
@@ -383,8 +395,11 @@ DWORD WINAPI ScanClearUpThread(LPVOID lpThreadParameter)
 	nDlg->SetTimer(nDlg->TIMER_CLEARATH, -1, NULL);
 
 	CString nTemp;
-	if (nDlg->IsScanFile)nTemp.Format(TEXT("扫描完成 垃圾容量：%s"), nDlg->GetShowSize(nDlg->m_AllFileSize));
-	else nTemp.Format(TEXT("清理完成 共释放容量：%s"), nDlg->GetShowSize(nDlg->m_AllFileSize));
+	if (nDlg->IsScanFile) {
+		nTemp.Format(TEXT("扫描完成 垃圾容量：%s"), nDlg->GetShowSize(nDlg->m_AllFileSize));
+	}else {
+		nTemp.Format(TEXT("清理完成 共释放容量：%s"), nDlg->GetShowSize(nDlg->m_AllFileSize));
+	}
 
 	nDlg->m_Static_Path.SetWindowText(nTemp);
 
@@ -402,7 +417,6 @@ void MyClearUpDlg::OnBnClickedButton1()
 	m_Button_Clear.EnableWindow(FALSE);
 	SetTimer(TIMER_SCANPATH, 100, NULL);//设置定时刷新
 	CreateThread(NULL, NULL, ScanClearUpThread, (LPVOID)this, NULL, NULL);
-
 }
 
 void MyClearUpDlg::OnBnClickedButton7()

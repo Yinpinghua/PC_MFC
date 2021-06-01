@@ -58,7 +58,7 @@ BEGIN_MESSAGE_MAP(MyAntiVirusDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BUTTON3, &MyAntiVirusDlg::OnBnClickedButton3)
 	ON_COMMAND(ID_CLEARONECE, &MyAntiVirusDlg::OnClearonece)
-	ON_COMMAND(ID_CLEARALL, &MyAntiVirusDlg::OnClearall)
+	ON_COMMAND(ID_CLEARALL, &MyAntiVirusDlg::OnClearAll)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST_FILE, &MyAntiVirusDlg::OnRclickListFile)
 	ON_BN_CLICKED(IDC_BUTTON7, &MyAntiVirusDlg::OnBnClickedButton7)
 	ON_BN_CLICKED(IDC_BUTTON8, &MyAntiVirusDlg::OnBnClickedButton8)
@@ -236,13 +236,17 @@ void MyAntiVirusDlg::OnBnClickedButton1()
 
 void MyAntiVirusDlg::LoadVirus()
 {
-	if (m_VirusInfo != nullptr)delete[]m_VirusInfo;
+	if (m_VirusInfo != nullptr) {
+		delete[]m_VirusInfo;
+		m_VirusInfo = nullptr;
+	}
+
 	load_virus_lib nLoadVirusLib;
 	m_VirusInfoNum = nLoadVirusLib.LoadVirusLibData();
 	m_VirusInfo = new VIRUSINFO[m_VirusInfoNum];
 
 	nLoadVirusLib.GetVirusLib(m_VirusInfo);
-	nLoadVirusLib.ClearVirusLibData();
+	nLoadVirusLib.clear_virus_lib_data();
 }
 
 /*
@@ -274,22 +278,20 @@ void MyAntiVirusDlg::OnBnClickedRadio1()
 void MyAntiVirusDlg::OnBnClickedRadio2()
 {
 	m_ThisPath = GetPathFrom();
-	if (m_ThisPath ==TEXT(""))
-	{
-		m_Radio_All_Control.SetCheck(TRUE);
-		m_Radio_This_Control.SetCheck(FALSE);
+	if (m_ThisPath ==TEXT("")){
+		m_Radio_All_Control.SetCheck(true);
+		m_Radio_This_Control.SetCheck(false);
 		return;
 	}
+
 	m_Static_Group.SetWindowText(TEXT("指定位置 - ")+ m_ThisPath);
 }
-
 
 void MyAntiVirusDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	CDialogEx::OnTimer(nIDEvent);
 
-	if (nIDEvent == REFERSHPATH_TIMER)
-	{
+	if (nIDEvent == REFERSHPATH_TIMER){
 		CString nTemp;
 		nTemp.Format(TEXT("文件数量：%d 正在扫描："), m_ScaningNum);
 		m_Static_Path.SetWindowText(nTemp + m_ScaningPath);
@@ -313,18 +315,16 @@ void MyAntiVirusDlg::OnClearonece()
 }
 
 //清除所有病毒文件
-void MyAntiVirusDlg::OnClearall()
+void MyAntiVirusDlg::OnClearAll()
 {
 	CString nFileName;
 	DWORD nCount;
 	nCount = m_List_File.GetItemCount();
-	for (DWORD i =0 ; i < nCount ; i++)
-	{
+	for (DWORD i =0; i < nCount; i++){
 		nFileName = m_List_File.GetItemText(i, 1);
 		//DeleteFile(nFileName);
 		m_List_File.DeleteItem(i);
 	}
-
 }
 
 //打开病毒库信息
@@ -344,8 +344,12 @@ void MyAntiVirusDlg::OnRclickListFile(NMHDR *pNMHDR, LRESULT *pResult)
 	POINT pos;
 	GetCursorPos(&pos);
 
-	if (pNMItemActivate->iItem == -1)nMenu->EnableMenuItem(ID_CLEARONECE, TRUE);
-	else nMenu->EnableMenuItem(ID_CLEARONECE, FALSE);
+	if (pNMItemActivate->iItem == -1) {
+		nMenu->EnableMenuItem(ID_CLEARONECE, TRUE);
+	}else {
+		nMenu->EnableMenuItem(ID_CLEARONECE, FALSE);
+	}
+
 	nMenu->EnableMenuItem(ID_CLEARALL, !m_List_File.GetItemCount());
 	nMenu->TrackPopupMenu(TPM_LEFTALIGN, pos.x, pos.y, this);
 }
@@ -416,9 +420,6 @@ void MyAntiVirusDlg::OnBnClickedButton7()
 	m_Button_Start_Process.EnableWindow(FALSE); //响应后禁止用户继续操作原UI
 	CreateThread(NULL, NULL, ScanProcessThread, (LPVOID)this, NULL, NULL);  //创建扫描线程扫描
 }
-
-
-
 
 void MyAntiVirusDlg::OnBnClickedCheck1()
 {

@@ -14,7 +14,7 @@
 #include "MyStartupDlg.h"
 #include <windows.h>
 
-DWORD g_Pid = 0;
+DWORD g_pid = 0;
 BOOL g_OpenTraffic = FALSE;
 
 #ifdef _DEBUG
@@ -397,7 +397,7 @@ void CMyTaskDlg::OnEnummoudle()
 {
 	DWORD nNow = m_List_Task.GetSelectionEx();
 	CString szPid = m_List_Task.GetItemText(nNow, 1);
-	_stscanf_s(szPid, TEXT("%d"), &g_Pid);
+	_stscanf_s(szPid, TEXT("%d"), &g_pid);
 
 	MyMoudleDlg nMoudleDlg;
 	nMoudleDlg.DoModal();
@@ -408,7 +408,7 @@ void CMyTaskDlg::OnEnumthread()
 {
 	DWORD nNow = m_List_Task.GetSelectionEx();
 	CString szPid = m_List_Task.GetItemText(nNow, 1);
-	_stscanf_s(szPid, TEXT("%d"), &g_Pid);
+	_stscanf_s(szPid, TEXT("%d"), &g_pid);
 
 	MyThreadDlg nThreadDlg;
 	nThreadDlg.DoModal();

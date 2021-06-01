@@ -64,7 +64,7 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnClearonece();
-	afx_msg void OnClearall();
+	afx_msg void OnClearAll();
 	afx_msg void OnRclickListFile(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButton7();
 

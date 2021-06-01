@@ -23,7 +23,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CMenu m_Menu;
+	CMenu menu_;
 	virtual BOOL OnInitDialog();
 	ClistCtrlEx m_List_Startup;
 	void PrintStartup();

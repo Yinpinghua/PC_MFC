@@ -19,7 +19,7 @@ public:
 
 	DWORD LoadVirusLibData();
 	void GetVirusLib(PVIRUSINFO &nVIRUSINFO);
-	void ClearVirusLibData();
+	void clear_virus_lib_data();
 	void SetVirusLib(PVIRUSINFO &nVIRUSINFO, DWORD nCount);
 
 	DWORD LoadProcessLibData();

@@ -92,8 +92,10 @@ md5_val md5(char * str, unsigned int size)
 		
 	//补位
 	strw[i++] = 0x80;
-	for (i; i < ln - 8; i++)
+	for (i; i < ln - 8; i++) {
 		strw[i] = 0x00;
+	}
+
 	//补长度
 	unsigned int * x = (unsigned int *)(strw + i);
 	*(x++) = size << 3;
@@ -308,7 +310,7 @@ md5_val md5_file(FILE * fpin)
 /* 获得文件的MD5值 */
 CStringA get_file_md5(CString fname)
 {
-	static char md5[33] = { 0 };
+	static char md5_str[33] = { 0 };
 	md5_val val;
 
 	FILE * fp = nullptr;
@@ -316,11 +318,11 @@ CStringA get_file_md5(CString fname)
 	if (fp!=nullptr)
 	{
 		val = md5_file(fp);
-		sprintf_s(md5,33, "%08x%08x%08x%08x", conv(val.a), conv(val.b), conv(val.c), conv(val.d));
+		sprintf_s(md5_str,33, "%08x%08x%08x%08x", conv(val.a), conv(val.b), conv(val.c), conv(val.d));
 		fclose(fp);
 	}
 
-	return CStringA(md5);
+	return CStringA(md5_str);
 }
 
 /* 获得字串的MD5值 */

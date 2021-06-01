@@ -36,7 +36,7 @@ BEGIN_MESSAGE_MAP(MyProcessLibDlg, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_PROCESS, &MyProcessLibDlg::OnDblclkListProcess)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_LIB, &MyProcessLibDlg::OnDblclkListLib)
 	ON_BN_CLICKED(IDC_BUTTON1, &MyProcessLibDlg::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BUTTON7, &MyProcessLibDlg::OnBnClickedButton7)
+	ON_BN_CLICKED(IDC_BUTTON7, &MyProcessLibDlg::OnBnClickedBtn7)
 END_MESSAGE_MAP()
 
 
@@ -176,16 +176,15 @@ void MyProcessLibDlg::OnDblclkListLib(NMHDR *pNMHDR, LRESULT *pResult)
 void MyProcessLibDlg::OnBnClickedButton1()
 {
 	btn_add_all_.EnableWindow(FALSE);
-	CString nFileName;
+	CString file_name;
 	CString nFilePath;
 	CString nFileMd5;
-	DWORD nCount;
-	BOOL nHave;
+	bool nHave = false;
 
-	nCount = list_process_.GetItemCount();
+	DWORD nCount = list_process_.GetItemCount();
 	for (DWORD i = 0; i < nCount; i++)
 	{
-		nFileName = list_process_.GetItemText(i, 0);
+		file_name = list_process_.GetItemText(i, 0);
 		nFilePath = list_process_.GetItemText(i, 1);
 
 		nFileMd5 = get_file_md5(nFilePath);
@@ -193,34 +192,33 @@ void MyProcessLibDlg::OnBnClickedButton1()
 
 		CString nLibName;
 		CString nLibMd5;
-		nHave = FALSE;
+		nHave = false;
 
 		for (INT x = 0; x < list_lib_.GetItemCount(); x++)
 		{
 			nLibName = list_lib_.GetItemText(x, 0);
 			nLibMd5 = list_lib_.GetItemText(x, 1);
 
-			if (strcmp(CStringA(nFileName), CStringA(nLibName)) == 0)
+			if (strcmp(CStringA(file_name), CStringA(nLibName)) == 0)
 			{
-				nHave = TRUE;
+				nHave = true;
 				break;
 			}
 		}
 
 		if (!nHave)
 		{
-			list_lib_.InsertItem(list_lib_.GetItemCount(), nFileName);
+			list_lib_.InsertItem(list_lib_.GetItemCount(), file_name);
 			list_lib_.SetItemText(list_lib_.GetItemCount() - 1, 1, nFileMd5);
 		}
 	}
 
 	UpDataProcessLib();
-	btn_add_all_.EnableWindow(TRUE);
-
+	btn_add_all_.EnableWindow(true);
 }
 
 
-void MyProcessLibDlg::OnBnClickedButton7()
+void MyProcessLibDlg::OnBnClickedBtn7()
 {
 	list_lib_.DeleteAllItems();
 	UpDataProcessLib();
