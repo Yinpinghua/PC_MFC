@@ -53,12 +53,12 @@ BOOL MyUnistallDlg::OnInitDialog()
 	m_List_Unistall.InsertColumn(2, TEXT("版本"), 0, 100);
 	m_List_Unistall.InsertColumn(3, TEXT("卸载目录"), 0, 200);
 
-	PrintUninstallList();
+	print_uninstall_list();
 
 	return TRUE;
 }
 
-void MyUnistallDlg::PrintUninstallList()
+void MyUnistallDlg::print_uninstall_list()
 {
 	m_List_Unistall.DeleteAllItems();
 
@@ -123,7 +123,7 @@ void MyUnistallDlg::PrintUninstallList()
 		dwBufferSize = MAXBYTE;
 		//卸载信息
 		nError = RegQueryValueEx(hKey2, L"UninstallString", 0, 0, (LPBYTE)szValueName, &dwBufferSize);
-		m_List_Unistall.SetItemText(m_List_Unistall.GetItemCount() - 1, 3, GetPathEx(szValueName));
+		m_List_Unistall.SetItemText(m_List_Unistall.GetItemCount() - 1, 3, get_path_ex(szValueName));
 		dwBufferSize = MAXBYTE;
 
 		RegCloseKey(hKey2);
@@ -135,7 +135,7 @@ void MyUnistallDlg::PrintUninstallList()
 
 	for (DWORD i =0;i<nListNum;i++)
 	{
-		nPath = GetPathEx(m_List_Unistall.GetItemText(i, 3));
+		nPath = get_path_ex(m_List_Unistall.GetItemText(i, 3));
 
 		DWORD nFileAttributes = SHGFI_SYSICONINDEX | SHGFI_SMALLICON;//获取文件信息
 		if (!SHGetFileInfo(nPath, nFileAttributes, &nPsfi, sizeof(SHFILEINFO), SHGFI_ICON))
@@ -150,12 +150,11 @@ void MyUnistallDlg::PrintUninstallList()
 	RegCloseKey(hKey);
 }
 
-
 void MyUnistallDlg::OnKeydownListUnistall(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
 	*pResult = 0;
-	if (pLVKeyDow->wVKey == 116)PrintUninstallList();
+	if (pLVKeyDow->wVKey == 116)print_uninstall_list();
 
 }
 
@@ -186,5 +185,5 @@ void MyUnistallDlg::OnRclickListUnistall(NMHDR *pNMHDR, LRESULT *pResult)
 
 void MyUnistallDlg::OnRefershsoftlist()
 {
-	PrintUninstallList();
+	print_uninstall_list();
 }

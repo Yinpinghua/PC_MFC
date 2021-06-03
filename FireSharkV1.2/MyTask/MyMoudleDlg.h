@@ -25,5 +25,5 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	ClistCtrlEx m_List_Module;
-	afx_msg void OnDblclkListModule(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void on_dblclk_list_module(NMHDR *pNMHDR, LRESULT *pResult);
 };

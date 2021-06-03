@@ -72,8 +72,8 @@ typedef union _NTOHS_UNION
 
 }NTOHS_UNION, *PNTOHS_UNION;
 
-void OutputDebugStringEx(const TCHAR* format, ...);
-void OutputDebugEdit(CEdit &m_Edit_Info, const TCHAR* format, ...);
+void output_debug_string_ex(const TCHAR* format, ...);
+void output_debug_edit(CEdit &m_Edit_Info, const TCHAR* format, ...);
 
 void MyRtlAdjustPrivilege();
 DWORD EnumTaskList(TASKLIST &nTaskList);
@@ -90,7 +90,7 @@ void EndProcess(DWORD nPid);
 void EndThread(DWORD nThreadid);
 void GetProcessFilePath(HANDLE hProcess, CString& sFilePath);
 void SetProcessState(DWORD nPid, BOOL nSuspend);
-void SetThreadState(DWORD nThreadid, BOOL nSuspend);
+void SetThreadState(DWORD nThreadid, bool nSuspend);
 DWORD get_mem_state();
 void OpenFile(CString &nFileNamePath);
 void GetCpuState(CString& nStr);
@@ -102,7 +102,7 @@ void OpenFileInfo(HWND nHwnd, CString &nFileRoute);
 DWORD GetProcessPid(CString nProcessName);
 
 CString GetProgramDir();
-CString GetPathEx(CString nPath);
+CString get_path_ex(CString nPath);
 void ClearMemory();
 CString GetPathFrom();
 vector<CString> GetDriverList();

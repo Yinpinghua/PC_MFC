@@ -93,6 +93,7 @@ BOOL CMyTaskApp::InitInstance()
 	if (pShellManager != NULL)
 	{
 		delete pShellManager;
+		pShellManager = nullptr;
 	}
 
 #ifndef _AFXDLL

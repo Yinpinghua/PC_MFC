@@ -4,3 +4,5 @@
 /FireSharkV1.2/MyTask/Release
 /FireSharkV1.2/MyTask/Debug
 /FireSharkV1.2/Release
+/FireSharkV1.2/Debug/*.ilk
+/FireSharkV1.2/Debug/*.pdb

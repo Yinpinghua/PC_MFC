@@ -1,5 +1,4 @@
 // MyStartupDlg.cpp : 实现文件
-//
 
 #include "stdafx.h"
 #include "MyTask.h"
@@ -7,9 +6,7 @@
 #include "MyStartupDlg.h"
 #include "afxdialogex.h"
 
-
 // MyStartupDlg 对话框
-
 IMPLEMENT_DYNAMIC(MyStartupDlg, CDialogEx)
 
 MyStartupDlg::MyStartupDlg(CWnd* pParent /*=NULL*/)
@@ -25,14 +22,14 @@ MyStartupDlg::~MyStartupDlg()
 void MyStartupDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LIST_STARTUP, m_List_Startup);
+	DDX_Control(pDX, IDC_LIST_STARTUP, list_startup_);
 }
 
 BEGIN_MESSAGE_MAP(MyStartupDlg, CDialogEx)
-	ON_COMMAND(ID_DELETESTATTUP, &MyStartupDlg::OnDeletestattup)
-	ON_COMMAND(ID_REFERSHSTATRUP, &MyStartupDlg::OnRefershstatrup)
-	ON_NOTIFY(NM_RCLICK, IDC_LIST_STARTUP, &MyStartupDlg::OnRclickListStartup)
-	ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_STARTUP, &MyStartupDlg::OnKeydownListStartup)
+	ON_COMMAND(ID_DELETESTATTUP, &MyStartupDlg::on_delete_stattup)
+	ON_COMMAND(ID_REFERSHSTATRUP, &MyStartupDlg::on_refersh_statrup)
+	ON_NOTIFY(NM_RCLICK, IDC_LIST_STARTUP, &MyStartupDlg::on_rclick_list_startup)
+	ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_STARTUP, &MyStartupDlg::on_keydown_list_startup)
 END_MESSAGE_MAP()
 
 
@@ -44,36 +41,36 @@ BOOL MyStartupDlg::OnInitDialog()
 	menu_.LoadMenu(IDR_MENU8);
 	SetMenu(&menu_);
 
-	m_List_Startup.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-	m_List_Startup.InsertColumn(0, TEXT("软件名称"), 0, 200);
-	m_List_Startup.InsertColumn(1, TEXT("命令行"), 0, 600);
-	m_List_Startup.InsertColumn(2, TEXT("注册表位置"), 0, 0);
+	list_startup_.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+	list_startup_.InsertColumn(0, TEXT("软件名称"), 0, 200);
+	list_startup_.InsertColumn(1, TEXT("命令行"), 0, 600);
+	list_startup_.InsertColumn(2, TEXT("注册表位置"), 0, 0);
 
-	PrintStartup();
+	print_startup();
 
-	return TRUE;
+	return true;
 }
 
-void MyStartupDlg::PrintStartup()
+void MyStartupDlg::print_startup()
 {
-	m_List_Startup.DeleteAllItems();
+	list_startup_.DeleteAllItems();
 
 	static HIMAGELIST nHiml = { 0 };//图标列表
 	static SHFILEINFO nPsfi = { 0 };//文件信息
 									//ImageList_Destroy(nHiml);//清除图标列表
-	static bool nOn = FALSE;
+	static bool nOn = false;
 	if (!nOn)
 	{
 		nOn = !nOn;
 		nHiml = ImageList_Create(32, 32, ILC_COLOR32, 0, 0);//订制图标框架
-		ImageList_SetBkColor(nHiml, m_List_Startup.GetBkColor());//设置图标列表底色
-		m_List_Startup.SendMessage(LVM_SETIMAGELIST, 1, (LPARAM)nHiml);//设置超级列表显示图标
+		ImageList_SetBkColor(nHiml, list_startup_.GetBkColor());//设置图标列表底色
+		list_startup_.SendMessage(LVM_SETIMAGELIST, 1, (LPARAM)nHiml);//设置超级列表显示图标
 	}
 
 	TCHAR szValueName[MAXBYTE] = { 0 };
 	TCHAR szValueKey[MAXBYTE] = { 0 };
 
-	TCHAR *REG_RUN[2] = { L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+	TCHAR *reg_run[2] = { L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
 		L"SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run" };
 	HKEY HKEY_RUN[2] = { HKEY_CURRENT_USER ,HKEY_LOCAL_MACHINE };
 
@@ -81,9 +78,9 @@ void MyStartupDlg::PrintStartup()
 	LONG nError;
 	CString nPath;
 
-	for (DWORD i = 0; i < _countof(REG_RUN); i++)
+	for (DWORD i = 0; i < _countof(reg_run); i++)
 	{
-		nError = RegOpenKey(HKEY_RUN[i], REG_RUN[i], &hKey);
+		nError = RegOpenKey(HKEY_RUN[i], reg_run[i], &hKey);
 
 		if (nError != ERROR_SUCCESS) {
 			MessageBox(TEXT("打开注册表失败"), TEXT("提示"), MB_ICONWARNING);
@@ -94,31 +91,33 @@ void MyStartupDlg::PrintStartup()
 		DWORD dwBufferSize = MAXBYTE;
 		while (true)
 		{
-			nError = RegEnumValue(hKey, nIndex++, szValueKey, &dwBufferSize, 0, 0, 0, &dwBufferSize);
+			nError = RegEnumValue(hKey, nIndex++, szValueKey,
+				&dwBufferSize, 0, 0, 0, &dwBufferSize);
 
-			if (nError == ERROR_NO_MORE_ITEMS || nError != 0) break;
+			if (nError == ERROR_NO_MORE_ITEMS || nError != 0) {
+				break;
+			}
 
 			RegQueryValueEx(hKey, szValueKey, 0, 0, (LPBYTE)szValueName, &dwBufferSize);
 
-			m_List_Startup.InsertItem(m_List_Startup.GetItemCount(), szValueKey);
-			m_List_Startup.SetItemText(m_List_Startup.GetItemCount() - 1, 1, GetPathEx(szValueName));
-			m_List_Startup.SetItemText(m_List_Startup.GetItemCount() - 1, 2, REG_RUN[i]);
-			m_List_Startup.SetItemData(m_List_Startup.GetItemCount() - 1, i);
-
+			list_startup_.InsertItem(list_startup_.GetItemCount(), szValueKey);
+			list_startup_.SetItemText(list_startup_.GetItemCount() - 1, 1,get_path_ex(szValueName));
+			list_startup_.SetItemText(list_startup_.GetItemCount() - 1, 2, reg_run[i]);
+			list_startup_.SetItemData(list_startup_.GetItemCount() - 1, i);
 
 			dwBufferSize = MAXBYTE;
-
 		}
+
 		RegCloseKey(hKey);
 	}
 
-	DWORD nListNum = m_List_Startup.GetItemCount();
+	DWORD nListNum = list_startup_.GetItemCount();
 
 	ImageList_SetImageCount(nHiml, nListNum);
 
 	for (DWORD i = 0; i < nListNum; i++)
 	{
-		nPath = GetPathEx(m_List_Startup.GetItemText(i, 1));
+		nPath = get_path_ex(list_startup_.GetItemText(i, 1));
 
 		DWORD nFileAttributes = SHGFI_SYSICONINDEX | SHGFI_SMALLICON;//获取文件信息
 		if (!SHGetFileInfo(nPath, nFileAttributes, &nPsfi, sizeof(SHFILEINFO), SHGFI_ICON)) {
@@ -130,25 +129,23 @@ void MyStartupDlg::PrintStartup()
 		ImageList_ReplaceIcon(nHiml, i, nPsfi.hIcon);
 		DestroyIcon(nPsfi.hIcon);
 
-		m_List_Startup.SetItemImageEx(i, 0, m_List_Startup.GetItemText(i, 0), i);
+		list_startup_.SetItemImageEx(i, 0, list_startup_.GetItemText(i, 0), i);
 	}
 }
 
 //关闭开启启动项
-void MyStartupDlg::OnDeletestattup()
+void MyStartupDlg::on_delete_stattup()
 {
-	HKEY HKEY_RUN[2] = { HKEY_CURRENT_USER ,HKEY_LOCAL_MACHINE };
+	HKEY hkey_run[2] = { HKEY_CURRENT_USER ,HKEY_LOCAL_MACHINE };
 	HKEY hKey = NULL;
-	LONG nError;
-	DWORD nIndex;
 	CString nHkeyPath;
 	CString nValueKey;
 		
-	nIndex = m_List_Startup.GetItemData(m_List_Startup.GetSelectionEx());
-	nValueKey = m_List_Startup.GetItemText(m_List_Startup.GetSelectionEx(), 0);
-	nHkeyPath = m_List_Startup.GetItemText(m_List_Startup.GetSelectionEx(), 2);
+	DWORD nIndex = list_startup_.GetItemData(list_startup_.GetSelectionEx());
+	nValueKey = list_startup_.GetItemText(list_startup_.GetSelectionEx(), 0);
+	nHkeyPath = list_startup_.GetItemText(list_startup_.GetSelectionEx(), 2);
 
-	nError = RegOpenKey(HKEY_RUN[nIndex], nHkeyPath, &hKey);
+	LONG nError = RegOpenKey(hkey_run[nIndex], nHkeyPath, &hKey);
 	if (nError != ERROR_SUCCESS) {
 		MessageBox(TEXT("打开注册表失败"), TEXT("提示"), MB_ICONWARNING);
 		return;
@@ -157,38 +154,48 @@ void MyStartupDlg::OnDeletestattup()
 	//删掉选中的该项的键和值
 	RegDeleteValue(hKey, nValueKey);
 	RegCloseKey(hKey);
-	PrintStartup();
+	print_startup();
 }
 
-void MyStartupDlg::OnRefershstatrup()
+void MyStartupDlg::on_refersh_statrup()
 {
-	PrintStartup();
+	print_startup();
 }
 
-void MyStartupDlg::OnRclickListStartup(NMHDR *pNMHDR, LRESULT *pResult)
+void MyStartupDlg::on_rclick_list_startup(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	if (pNMItemActivate == nullptr){
+		return;
+	}
+
 	*pResult = 0;
 
 	CMenu *nMenu = menu_.GetSubMenu(0);
 	POINT pos;
 	GetCursorPos(&pos);
 
+	if (nMenu == nullptr){
+		return;
+	}
+
 	if (pNMItemActivate->iItem == -1) {
-		nMenu->EnableMenuItem(ID_DELETESTATTUP, TRUE);
+		nMenu->EnableMenuItem(ID_DELETESTATTUP,true);
 	}else {
-		nMenu->EnableMenuItem(ID_DELETESTATTUP, FALSE);
+		nMenu->EnableMenuItem(ID_DELETESTATTUP,false);
 	}
 
 	nMenu->TrackPopupMenu(TPM_LEFTALIGN, pos.x, pos.y, this);
 }
 
-void MyStartupDlg::OnKeydownListStartup(NMHDR *pNMHDR, LRESULT *pResult)
+void MyStartupDlg::on_keydown_list_startup(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
 	*pResult = 0;
 
-	if (pLVKeyDow->wVKey == 116) {
-		PrintStartup();
+	if (pLVKeyDow->wVKey != 116) {
+		return;
 	}
+
+	print_startup();
 }

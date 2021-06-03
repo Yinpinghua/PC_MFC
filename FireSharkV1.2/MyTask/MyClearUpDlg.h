@@ -33,9 +33,9 @@ public:
 	CButton m_Button_Scan;
 	CButton m_Button_Clear;
 
-	BOOL IsScanFile;
+	bool is_scan_file_;
 	CString m_szTemp;
-	DOUBLE m_AllFileSize;
+	double m_AllFileSize;
 	CStatic m_Static_Path;
 	CString m_ScaningPath;
 
@@ -47,13 +47,11 @@ public:
 	BOOL WipeFile(LPCTSTR szDir, LPCTSTR szFile);
 	BOOL DeleteUrlCache();
 	
-	VOID CleanSystemTemp(); //系统垃圾
-	VOID CleanRubbishStation();  //回收站垃圾
-	VOID CleanInternetCookieTemp();  //浏览器垃圾
-	VOID CleanBrowseAddrHistory();  //浏览器历史记录
-	VOID CleanPasswordHistory();   //清理历史密码记录
-
-
+	void CleanSystemTemp(); //系统垃圾
+	void CleanRubbishStation();  //回收站垃圾
+	void CleanInternetCookieTemp();  //浏览器垃圾
+	void CleanBrowseAddrHistory();  //浏览器历史记录
+	void CleanPasswordHistory();   //清理历史密码记录
 
 	afx_msg void OnBnClickedButton7();
 	CButton m_Check_SystemTemp;

@@ -60,7 +60,7 @@ BOOL MyClearUpDlg::OnInitDialog()
 	m_List_File.InsertColumn(0, TEXT("文件路径"), 0, 500);
 	m_List_File.InsertColumn(1, TEXT("文件大小"), 0, 100);
 
-	IsScanFile = TRUE;
+	is_scan_file_ = TRUE;
 
 	m_Check_SystemTemp.SetCheck(TRUE);
 	m_Check_Rubbish.SetCheck(TRUE);
@@ -129,7 +129,7 @@ BOOL MyClearUpDlg::EmptyDirectory(LPCTSTR szPath, BOOL bDeleteDesktopIni, BOOL b
 		sFullPath += wfd.cFileName;
 
 		//判断是否是扫描文件，如果是 就输出到List
-		if (IsScanFile)
+		if (is_scan_file_)
 		{
 			m_ScaningPath = sFullPath;
 			//插入到List
@@ -231,7 +231,7 @@ BOOL MyClearUpDlg::WipeFile(LPCTSTR szDir, LPCTSTR szFile)
 VOID MyClearUpDlg::CleanInternetCookieTemp()
 {
 	CString strPath;
-	if (!IsScanFile)
+	if (!is_scan_file_)
 	{
 		DeleteUrlCache();
 	}
@@ -295,7 +295,7 @@ BOOL MyClearUpDlg::DeleteUrlCache()
 //清理浏览记录
 VOID MyClearUpDlg::CleanBrowseAddrHistory()
 {
-	if (IsScanFile)
+	if (is_scan_file_)
 		return;
 	HRESULT hr;
 	CString strPath;
@@ -329,7 +329,7 @@ VOID MyClearUpDlg::CleanBrowseAddrHistory()
 //清理密码记录
 VOID MyClearUpDlg::CleanPasswordHistory()
 {
-	if (IsScanFile)
+	if (is_scan_file_)
 		return;
 	SHDeleteKey(HKEY_CURRENT_USER,TEXT("Software\\Microsoft\\Internet Explorer\\IntelliForms"));
 }
@@ -359,7 +359,7 @@ VOID MyClearUpDlg::CleanSystemTemp()
 //清理回收站
 VOID MyClearUpDlg::CleanRubbishStation()
 {
-	if (IsScanFile) {
+	if (is_scan_file_) {
 		return;
 	}
 
@@ -387,15 +387,17 @@ DWORD WINAPI ScanClearUpThread(LPVOID lpThreadParameter)
 	if (nDlg->m_Check_BrowseHistroy.GetCheck()) {
 		nDlg->CleanBrowseAddrHistory();//清理浏览记录
 	}
-	if (nDlg->m_Check_PassHistory.GetCheck())nDlg->CleanPasswordHistory();//清理密码记录
+	if (nDlg->m_Check_PassHistory.GetCheck()) {
+		nDlg->CleanPasswordHistory();//清理密码记录
+	}
 
-	nDlg->m_Button_Scan.EnableWindow(TRUE);
-	nDlg->m_Button_Clear.EnableWindow(TRUE);
-	nDlg->SetTimer(nDlg->TIMER_SCANPATH, -1, NULL);
-	nDlg->SetTimer(nDlg->TIMER_CLEARATH, -1, NULL);
+	nDlg->m_Button_Scan.EnableWindow(true);
+	nDlg->m_Button_Clear.EnableWindow(true);
+	nDlg->SetTimer(nDlg->TIMER_SCANPATH, -1,nullptr);
+	nDlg->SetTimer(nDlg->TIMER_CLEARATH, -1,nullptr);
 
 	CString nTemp;
-	if (nDlg->IsScanFile) {
+	if (nDlg->is_scan_file_) {
 		nTemp.Format(TEXT("扫描完成 垃圾容量：%s"), nDlg->GetShowSize(nDlg->m_AllFileSize));
 	}else {
 		nTemp.Format(TEXT("清理完成 共释放容量：%s"), nDlg->GetShowSize(nDlg->m_AllFileSize));
@@ -411,7 +413,7 @@ void MyClearUpDlg::OnBnClickedButton1()
 
 	m_List_File.DeleteAllItems();
 
-	IsScanFile = TRUE;
+	is_scan_file_ = TRUE;
 	m_AllFileSize = 0;
 	m_Button_Scan.EnableWindow(FALSE);
 	m_Button_Clear.EnableWindow(FALSE);
@@ -423,7 +425,7 @@ void MyClearUpDlg::OnBnClickedButton7()
 {
 	m_List_File.DeleteAllItems();
 	
-	IsScanFile = FALSE;
+	is_scan_file_ = FALSE;
 	m_AllFileSize = 0;
 	m_Button_Scan.EnableWindow(FALSE);
 	m_Button_Clear.EnableWindow(FALSE);

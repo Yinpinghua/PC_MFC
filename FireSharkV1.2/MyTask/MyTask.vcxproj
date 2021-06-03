@@ -289,7 +289,6 @@
     <Image Include="res\FiresShark.ico" />
     <Image Include="res\MyTask.ico" />
     <Image Include="res\MyTask1.ico" />
-    <Image Include="res\项目48.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

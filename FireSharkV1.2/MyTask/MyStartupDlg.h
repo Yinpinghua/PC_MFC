@@ -25,10 +25,10 @@ protected:
 public:
 	CMenu menu_;
 	virtual BOOL OnInitDialog();
-	ClistCtrlEx m_List_Startup;
-	void PrintStartup();
-	afx_msg void OnDeletestattup();
-	afx_msg void OnRefershstatrup();
-	afx_msg void OnRclickListStartup(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnKeydownListStartup(NMHDR *pNMHDR, LRESULT *pResult);
+	ClistCtrlEx list_startup_;
+	void print_startup();
+	afx_msg void on_delete_stattup();
+	afx_msg void on_refersh_statrup();
+	afx_msg void on_rclick_list_startup(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void on_keydown_list_startup(NMHDR *pNMHDR, LRESULT *pResult);
 };

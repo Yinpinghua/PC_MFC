@@ -28,7 +28,7 @@ public:
 	CMenu m_Menu;
 
 
-	void PrintUninstallList();
+	void print_uninstall_list();
 	afx_msg void OnKeydownListUnistall(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnUninstall();
 	afx_msg void OnRclickListUnistall(NMHDR *pNMHDR, LRESULT *pResult);

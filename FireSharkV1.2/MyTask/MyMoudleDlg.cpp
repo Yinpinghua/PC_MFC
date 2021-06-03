@@ -30,7 +30,7 @@ void MyMoudleDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(MyMoudleDlg, CDialogEx)
-	ON_NOTIFY(NM_DBLCLK, IDC_LIST_MODULE, &MyMoudleDlg::OnDblclkListModule)
+	ON_NOTIFY(NM_DBLCLK, IDC_LIST_MODULE, &MyMoudleDlg::on_dblclk_list_module)
 END_MESSAGE_MAP()
 // MyMoudleDlg 消息处理程序
 void PrintModuleList(ClistCtrlEx &m_List_Module, MODULELIST &nModuleList, const DWORD nTaskNum)
@@ -67,7 +67,7 @@ BOOL MyMoudleDlg::OnInitDialog()
 	return true; 
 }
 
-void MyMoudleDlg::OnDblclkListModule(NMHDR *pNMHDR, LRESULT *pResult)
+void MyMoudleDlg::on_dblclk_list_module(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	*pResult = 0;

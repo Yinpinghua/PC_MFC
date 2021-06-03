@@ -6,9 +6,9 @@
 #include <ws2tcpip.h>
 
 
-void OutputDebugStringEx(const TCHAR* format, ...) 
+void output_debug_string_ex(const TCHAR* format, ...) 
 {
-	TCHAR buff[500];
+	TCHAR buff[500] = {};
 	va_list pArgs = nullptr;
 	va_start(pArgs, format);
 	_vstprintf_s(buff, _countof(buff), format, pArgs);
@@ -16,9 +16,9 @@ void OutputDebugStringEx(const TCHAR* format, ...)
 	nTemp += TEXT("\n");
 	OutputDebugString(nTemp);
 }
-void OutputDebugEdit(CEdit &m_Edit_Info, const TCHAR* format, ...)
+void output_debug_edit(CEdit &m_Edit_Info, const TCHAR* format, ...)
 {
-	TCHAR buff[500];
+	TCHAR buff[500] = {};
 	va_list pArgs = nullptr;
 	va_start(pArgs, format);
 	_vstprintf_s(buff, _countof(buff), format, pArgs);
@@ -29,7 +29,7 @@ void OutputDebugEdit(CEdit &m_Edit_Info, const TCHAR* format, ...)
 	m_Edit_Info.ReplaceSel(nTemp);
 }
 
-CString GetPathEx(CString nPath)
+CString get_path_ex(CString nPath)
 {
 	nPath = nPath.MakeLower();
 	UINT nIndex = nPath.Find(TEXT(".exe"));
@@ -109,7 +109,6 @@ DWORD EnumTaskList(TASKLIST &nTaskList)
 
 	return nIndex;
 }
-
 
 DWORD EnumModuleList(MODULELIST &nModuleList, DWORD nPid)
 {
@@ -370,7 +369,7 @@ void EndThread(DWORD nThreadid)
 void GetProcessFilePath(HANDLE hProcess, CString& sFilePath)
 {
 	sFilePath = _T("");
-	TCHAR tsFileDosPath[MAX_PATH + 1];
+	TCHAR tsFileDosPath[MAX_PATH + 1] = {};
 	ZeroMemory(tsFileDosPath, sizeof(TCHAR)*(MAX_PATH + 1));
 	if (0 == GetProcessImageFileName(hProcess, tsFileDosPath, MAX_PATH + 1))
 	{
@@ -391,6 +390,7 @@ void GetProcessFilePath(HANDLE hProcess, CString& sFilePath)
 	if (0 == uiLen)
 	{
 		delete[]pLogicDriveString;
+		pLogicDriveString = nullptr;
 		return;
 	}
 
@@ -410,6 +410,7 @@ void GetProcessFilePath(HANDLE hProcess, CString& sFilePath)
 			}
 
 			delete[]pDosDriveName;
+			pDosDriveName = nullptr;
 			pDosDriveName = new TCHAR[uiLen + 1];
 			uiLen = QueryDosDevice(szDrive, pDosDriveName, (DWORD)uiLen + 1);
 			if (0 == uiLen)
@@ -457,18 +458,16 @@ void SetProcessState(DWORD nPid, BOOL nSuspend)
 	CloseHandle(nHandle);
 
 }
-void SetThreadState(DWORD nThreadid, BOOL nSuspend)
+void SetThreadState(DWORD nThreadid, bool nSuspend)
 {
 	HANDLE nHandle = OpenThread(PROCESS_ALL_ACCESS, FALSE, nThreadid);
 
-	if (nSuspend)
-	{
+	if (nSuspend){
 		SuspendThread(nHandle);
-	}
-	else
-	{
+	}else{
 		ResumeThread(nHandle);
 	}
+
 	CloseHandle(nHandle);
 }
 
@@ -495,7 +494,6 @@ void OpenFile(CString &nFileNamePath)
 	SHOpenFolderAndSelectItems(nItem, 0, 0, 0);
 
 	ILFree(nItem);
-
 }
 
 //cpu

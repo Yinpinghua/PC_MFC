@@ -33,7 +33,7 @@
     <Filter Include="病毒/进程扫描">
       <UniqueIdentifier>{71bb6f95-0fd3-46fc-9f71-7c4d32cf2259}</UniqueIdentifier>
     </Filter>
-    <Filter Include="重写mfc">
+    <Filter Include="md5转换\重写mfc">
       <UniqueIdentifier>{25fce47f-aa41-4d50-b898-1c170f99a0e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -51,7 +51,7 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ClistCtrlEx.h">
-      <Filter>重写mfc</Filter>
+      <Filter>md5转换\重写mfc</Filter>
     </ClInclude>
     <ClInclude Include="md5_file.h">
       <Filter>md5转换</Filter>
@@ -78,7 +78,7 @@
       <Filter>卸载管理</Filter>
     </ClInclude>
     <ClInclude Include="StatusBarEx.h">
-      <Filter>重写mfc</Filter>
+      <Filter>md5转换\重写mfc</Filter>
     </ClInclude>
     <ClInclude Include="MyClearUpDlg.h">
       <Filter>垃圾清理</Filter>
@@ -104,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClistCtrlEx.cpp">
-      <Filter>重写mfc</Filter>
+      <Filter>md5转换\重写mfc</Filter>
     </ClCompile>
     <ClCompile Include="md5_file.cpp">
       <Filter>md5转换</Filter>
@@ -131,7 +131,7 @@
       <Filter>卸载管理</Filter>
     </ClCompile>
     <ClCompile Include="StatusBarEx.cpp">
-      <Filter>重写mfc</Filter>
+      <Filter>md5转换\重写mfc</Filter>
     </ClCompile>
     <ClCompile Include="MyClearUpDlg.cpp">
       <Filter>垃圾清理</Filter>
@@ -173,9 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MyTask.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="res\项目48.ico">
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\FiresShark.ico">
